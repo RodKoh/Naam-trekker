@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameList = document.getElementById('nameList');
     const resultDisplay = document.getElementById('result');
     let names = [];
+    let roundNumber = 1;
 
     // Functie om een naam toe te voegen aan de lijst
     addNameButton.addEventListener('click', () => {
@@ -25,6 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
         names.forEach((name, index) => {
             const li = document.createElement('li');
             li.textContent = name;
+
+            // Verwijderknop toevoegen
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Verwijder';
+            deleteBtn.onclick = function() {
+                names.splice(index, 1);
+                displayNames();
+            };
+            li.appendChild(deleteBtn);
+
             nameList.appendChild(li);
         });
     }
@@ -37,7 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
             resultDisplay.textContent = `Getrokken naam: ${drawnName}`;
             displayNames(); // Update de lijst
         } else {
-            alert('Geen namen meer om te trekken.');
+            resultDisplay.textContent = `Dit is het einde van ronde ${roundNumber}.`;
+            roundNumber++;
+            startNewRound();
         }
     });
+
+    function startNewRound() {
+        const useNamesAgain = confirm("Wilt u alle namen opnieuw gebruiken voor de nieuwe ronde?");
+        if (!useNamesAgain) {
+            names = []; // Leeg de namenlijst als we niet alle namen opnieuw gebruiken
+        }
+        displayNames(); // Update de lijst
+        resultDisplay.innerHTML = "Voeg namen toe voor de nieuwe ronde.";
+    }
 });
