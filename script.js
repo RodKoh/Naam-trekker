@@ -8,21 +8,16 @@ function voegNaamToe() {
         namen.push(naam);
         updateNamenLijst();
         naamInput.value = ''; // Reset inputveld
+    } else {
+        alert('Deze naam bestaat al of is leeg.');
     }
 }
 
 function updateNamenLijst() {
     const namenLijst = document.getElementById('namenLijst');
-    namenLijst.innerHTML = ''; // Reset de lijst
-    namen.forEach(naam => {
-        let li = document.createElement('li');
-        li.textContent = naam;
-        let verwijderBtn = document.createElement('button');
-        verwijderBtn.textContent = 'Verwijder';
-        verwijderBtn.onclick = function() { verwijderNaam(naam); };
-        li.appendChild(verwijderBtn);
-        namenLijst.appendChild(li);
-    });
+    namenLijst.innerHTML = namen.map((naam) => 
+        `<li>${naam} <button onclick="verwijderNaam('${naam}')">Verwijder</button></li>`
+    ).join('');
 }
 
 function verwijderNaam(naam) {
@@ -37,19 +32,19 @@ function trekNaam() {
         alert('Voeg eerst namen toe voor de trekking.');
         return;
     }
-    const getrokkenIndex = Math.floor(Math.random() * namen.length);
-    const getrokkenNaam = namen[getrokkenIndex];
-    if (!getrokkenNamen.includes(getrokkenNaam)) {
-        getrokkenNamen.push(getrokkenNaam);
-        document.getElementById('getrokkenNamen').innerHTML += `<li>${getrokkenNaam}</li>`;
-    } else if (getrokkenNamen.length < namen.length) {
-        trekNaam(); // Probeer opnieuw als naam al getrokken is en er zijn nog namen over
-    } else {
-        alert('Alle namen zijn getrokken voor deze ronde.');
+
+    if (getrokkenNamen.length === namen.length) {
+        alert('Alle namen zijn getrokken. Start een nieuwe ronde.');
+        return;
     }
+
+    let nogNietGetrokken = namen.filter(naam => !getrokkenNamen.includes(naam));
+    let getrokkenNaam = nogNietGetrokken[Math.floor(Math.random() * nogNietGetrokken.length)];
+    getrokkenNamen.push(getrokkenNaam);
+    document.getElementById('getrokkenNamen').innerHTML += `<li>${getrokkenNaam}</li>`;
 }
 
-function resetRonde() {
+function startNieuweRonde() {
     getrokkenNamen = [];
     document.getElementById('getrokkenNamen').innerHTML = '';
     alert('Nieuwe ronde gestart. Je kunt weer namen trekken.');
@@ -60,7 +55,3 @@ document.getElementById('naamInput').addEventListener('keypress', function(e) {
         voegNaamToe();
     }
 });
-
-window.onload = function() {
-    updateNamenLijst();
-};
