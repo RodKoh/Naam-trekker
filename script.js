@@ -4,35 +4,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawNameButton = document.getElementById('drawName');
     const nameList = document.getElementById('nameList');
     const resultDisplay = document.getElementById('result');
-    const historyDisplay = document.getElementById('history'); // Voeg een element toe voor de geschiedenis
+    const historyDisplay = document.getElementById('history');
     let names = [];
     let roundNumber = 1;
-    let history = []; // Opslaan van getrokken namen en hun rondes
+    let history = [];
 
-    // Functie om een naam toe te voegen aan de lijst
     addNameButton.addEventListener('click', () => {
         const name = nameInput.value.trim();
         if (name) {
             names.push(name);
             displayNames();
-            nameInput.value = ''; // Reset invoerveld
-            nameInput.focus(); // Focus terug naar invoerveld
+            nameInput.value = '';
+            nameInput.focus();
         } else {
             alert('Voer een geldige naam in.');
         }
     });
 
     function displayNames() {
-        nameList.innerHTML = ''; // Leeg de lijst
+        nameList.innerHTML = '';
         names.forEach((name, index) => {
             const li = document.createElement('li');
-            li.textContent = name + " "; 
-
+            li.textContent = name + " ";
+            
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Verwijder';
             deleteBtn.addEventListener('click', () => {
                 names.splice(index, 1);
-                displayNames(); 
+                displayNames();
             });
             li.appendChild(deleteBtn);
 
@@ -45,12 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const index = Math.floor(Math.random() * names.length);
             const drawnName = names.splice(index, 1)[0];
             resultDisplay.textContent = `Getrokken naam: ${drawnName}`;
-            history.push({ round: roundNumber, name: drawnName }); // Sla op in geschiedenis
-            displayNames(); 
-            updateHistoryDisplay(); // Update geschiedenis weergave
+            history.push({round: roundNumber, name: drawnName});
+            displayNames();
+            updateHistoryDisplay();
         } else {
             resultDisplay.textContent = `Dit is het einde van ronde ${roundNumber}.`;
-            roundNumber++;
             offerNewRound();
         }
     });
@@ -60,17 +58,21 @@ document.addEventListener('DOMContentLoaded', () => {
         newRoundBtn.textContent = 'Start Nieuwe Ronde';
         newRoundBtn.addEventListener('click', () => {
             startNewRound();
+            resultDisplay.innerHTML = ''; // Reset resultDisplay voor nieuwe ronde
+            newRoundBtn.remove(); // Verwijder de 'Start Nieuwe Ronde' knop
         });
-        resultDisplay.innerHTML = ""; 
         resultDisplay.appendChild(newRoundBtn);
     }
 
     function startNewRound() {
         const useNamesAgain = confirm("Wilt u alle namen opnieuw gebruiken voor de nieuwe ronde?");
         if (!useNamesAgain) {
-            names = []; 
+            names = [];
+            history = []; // Optioneel, afhankelijk van of je de geschiedenis tussen rondes wilt behouden
         }
-        displayNames(); 
+        roundNumber++;
+        displayNames();
+        updateHistoryDisplay(); // Update de geschiedenisweergave als je besluit de geschiedenis te behouden
         resultDisplay.textContent = "Voeg namen toe voor de nieuwe ronde.";
     }
 
