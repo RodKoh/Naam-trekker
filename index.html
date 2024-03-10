@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naam Trekker</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Namen Trekker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app">
-        <h2>Naam Trekker App</h2>
-        <div id="roundInfo">Ronde: <span id="roundNumber">1</span></div>
-        <input type="text" id="nameInput" placeholder="Voer een naam in">
-        <button id="addName">Voeg naam toe</button>
-        <ul id="nameList"></ul>
-        <button id="drawName">Trek een naam</button>
-        <div id="result"></div>
-        <div id="history"><h3>Trekking Geschiedenis</h3></div>
-    </div>
-        <div id="instructions">
-            <p>Voeg namen toe om te beginnen. Druk op 'Trek een naam' om te beginnen met trekken. Namen kunnen verwijderd worden door op 'Verwijder' te klikken naast elke naam.</p>
+    <div class="container">
+        <div id="namenInvoer" class="paneel">
+            <h2>Namen Invoeren</h2>
+            <input type="text" id="naamInput" placeholder="Voeg een naam toe">
+            <button onclick="voegNaamToe()">Toevoegen</button>
+            <ul id="namenLijst"></ul>
+        </div>
+        <div id="trekking" class="paneel">
+            <h2>Trekking</h2>
+            <button onclick="trekNaam()">Trek Naam</button>
+            <ul id="getrokkenNamen"></ul>
+        </div>
+        <div id="geschiedenis" class="paneel">
+            <h2>Geschiedenis</h2>
+            <ul id="trekkingGeschiedenis"></ul>
         </div>
     </div>
     <script src="script.js"></script>
-
 </body>
 </html>
