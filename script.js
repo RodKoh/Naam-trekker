@@ -31,6 +31,9 @@ function updateNamenLijst() {
 function verwijderNaam(naam) {
     if (confirm('Weet je zeker dat je deze naam wilt verwijderen?')) {
         namen = namen.filter(n => n !== naam);
+        if (getrokkenNamen.includes(naam)) {
+            getrokkenNamen = getrokkenNamen.filter(n => n !== naam);
+        }
         updateNamenLijst();
     }
 }
@@ -57,9 +60,11 @@ function startNieuweRonde() {
         return;
     }
 
-    if (getrokkenNamen.length !== namen.length) {
-        alert('Nog niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?');
-        return;
+    if (getrokkenNamen.length !== namen.length && getrokkenNamen.length > 0) {
+        let bevestiging = confirm('Nog niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?');
+        if (!bevestiging) {
+            return; // Als de gebruiker kiest om niet door te gaan, stop de functie
+        }
     }
 
     getrokkenNamen = [];
