@@ -1,58 +1,35 @@
-/* Algemene stijlen */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+body, html {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-#app {
-    background: white;
+    flex-direction: row;
+    justify-content: space-around;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    width: 90%;
-    max-width: 500px;
 }
 
-input, button {
+.paneel {
+    border: 1px solid #ddd;
     padding: 10px;
-    margin-top: 10px;
-    width: calc(100% - 22px); /* Correctie voor padding */
-    box-sizing: border-box;
+    width: 30%;
 }
 
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-button:hover {
-    background-color: #0056b3;
+.paneel h2 {
+    text-align: center;
 }
 
 ul {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
 }
 
 li {
     margin-bottom: 10px;
-    padding: 10px;
-    background-color: #eee;
-    border-radius: 4px;
 }
 
-#result {
-    margin-top: 20px;
-    font-size: 20px;
-    color: green;
-    font-weight: bold;
+button {
+    cursor: pointer;
 }
