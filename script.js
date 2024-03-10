@@ -20,20 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Functie om de namen weer te geven in de lijst
+    // Functie om de namen weer te geven in de lijst en om de verwijderknoppen correct te integreren
     function displayNames() {
         nameList.innerHTML = ''; // Leeg de lijst
         names.forEach((name, index) => {
             const li = document.createElement('li');
-            li.textContent = name;
+            li.textContent = name + " "; // Voeg een spatie toe voor de leesbaarheid
 
             // Verwijderknop toevoegen
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Verwijder';
-            deleteBtn.onclick = function() {
+            deleteBtn.addEventListener('click', () => {
                 names.splice(index, 1);
-                displayNames(); // Update de lijst
-            };
+                displayNames(); // Update de lijst om de verwijderde naam te reflecteren
+            });
             li.appendChild(deleteBtn);
 
             nameList.appendChild(li);
@@ -57,9 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function offerNewRound() {
         const newRoundBtn = document.createElement('button');
         newRoundBtn.textContent = 'Start Nieuwe Ronde';
-        newRoundBtn.onclick = function() {
+        newRoundBtn.addEventListener('click', () => {
             startNewRound();
-        };
+        });
+        resultDisplay.innerHTML = ""; // Reset de inhoud voordat de nieuwe knop wordt toegevoegd
         resultDisplay.appendChild(newRoundBtn);
     }
 
