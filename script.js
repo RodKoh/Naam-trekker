@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Functie om een naam toe te voegen aan de lijst
     addNameButton.addEventListener('click', () => {
         const name = nameInput.value.trim();
-        if(name) {
+        if (name) {
             names.push(name);
             displayNames();
             nameInput.value = ''; // Reset invoerveld
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.textContent = 'Verwijder';
             deleteBtn.onclick = function() {
                 names.splice(index, 1);
-                displayNames();
+                displayNames(); // Update de lijst
             };
             li.appendChild(deleteBtn);
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Functie om een willekeurige naam te trekken
     drawNameButton.addEventListener('click', () => {
-        if(names.length > 0) {
+        if (names.length > 0) {
             const index = Math.floor(Math.random() * names.length);
             const drawnName = names.splice(index, 1)[0];
             resultDisplay.textContent = `Getrokken naam: ${drawnName}`;
@@ -50,9 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             resultDisplay.textContent = `Dit is het einde van ronde ${roundNumber}.`;
             roundNumber++;
-            startNewRound();
+            offerNewRound();
         }
     });
+
+    function offerNewRound() {
+        const newRoundBtn = document.createElement('button');
+        newRoundBtn.textContent = 'Start Nieuwe Ronde';
+        newRoundBtn.onclick = function() {
+            startNewRound();
+        };
+        resultDisplay.appendChild(newRoundBtn);
+    }
 
     function startNewRound() {
         const useNamesAgain = confirm("Wilt u alle namen opnieuw gebruiken voor de nieuwe ronde?");
@@ -60,6 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
             names = []; // Leeg de namenlijst als we niet alle namen opnieuw gebruiken
         }
         displayNames(); // Update de lijst
-        resultDisplay.innerHTML = "Voeg namen toe voor de nieuwe ronde.";
+        resultDisplay.textContent = "Voeg namen toe voor de nieuwe ronde.";
     }
 });
