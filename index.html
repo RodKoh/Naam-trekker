@@ -9,11 +9,18 @@
 <body>
     <div id="app">
         <h2>Naam Trekker App</h2>
+        <div id="roundInfo">Ronde: <span id="roundNumber">1</span></div>
         <input type="text" id="nameInput" placeholder="Voer een naam in">
         <button id="addName">Voeg naam toe</button>
         <ul id="nameList"></ul>
         <button id="drawName">Trek een naam</button>
         <div id="result"></div>
-        <div id="history"><h3>Trekking Geschiedenis</h3></div>
+        <div id="instructions">
+            <p>Voeg namen toe om te beginnen. Druk op 'Trek een naam' om te beginnen met trekken. Namen kunnen verwijderd worden door op 'Verwijder' te klikken naast elke naam.</p>
+        </div>
     </div>
-   
+    <script src="script.js"></script>
+    <div id="history"><h3>Trekking Geschiedenis</h3></div>
+    </div>
+</body>
+</html>
