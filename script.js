@@ -9,7 +9,8 @@ function voegNaamToe() {
         namen.push(naam);
         updateNamenLijst();
         naamInput.value = ''; // Reset inputveld
-        updateTrekNaamKnop();
+        // Herbereken of de "Trek naam" knop getoond moet worden elke keer dat een naam wordt toegevoegd.
+        berekenTrekNaamKnopStatus();
     } else {
         alert('Deze naam bestaat al of is leeg.');
     }
@@ -32,8 +33,9 @@ function updateNamenLijst() {
 function verwijderNaam(naam) {
     if (confirm('Weet je zeker dat je deze naam wilt verwijderen?')) {
         namen = namen.filter(n => n !== naam);
+        getrokkenNamen = getrokkenNamen.filter(n => n !== naam); // Verwijder de naam ook uit getrokkenNamen indien nodig
         updateNamenLijst();
-        updateTrekNaamKnop();
+        berekenTrekNaamKnopStatus(); // Herbereken de status van de "Trek naam" knop na verwijdering
     }
 }
 
@@ -43,20 +45,20 @@ function trekNaam() {
         let getrokkenNaam = nogNietGetrokken[Math.floor(Math.random() * nogNietGetrokken.length)];
         getrokkenNamen.push(getrokkenNaam);
         document.getElementById('getrokkenNamen').innerHTML += `<li>${getrokkenNaam}</li>`;
-        updateTrekNaamKnop();
     } else {
         alert('Alle namen zijn getrokken voor deze ronde.');
     }
+    berekenTrekNaamKnopStatus();
 }
 
 function startNieuweRonde() {
     if (getrokkenNamen.length > 0) {
         rondesGeschiedenis.push([...getrokkenNamen]);
-        updateGeschiedenis();
     }
     getrokkenNamen = [];
     document.getElementById('getrokkenNamen').innerHTML = '';
-    updateTrekNaamKnop();
+    berekenTrekNaamKnopStatus(); // Zorg dat de "Trek naam" knop correct getoond/verborgen wordt voor de nieuwe ronde
+    updateGeschiedenis();
     alert('Nieuwe ronde gestart. Je kunt weer namen trekken.');
 }
 
@@ -70,10 +72,9 @@ function updateGeschiedenis() {
     });
 }
 
-function updateTrekNaamKnop() {
-    // Toon de "Trek naam" knop alleen als er nog niet-getrokken namen zijn
-    const nogNietGetrokken = namen.filter(naam => !getrokkenNamen.includes(naam)).length;
-    document.getElementById('trekNaamKnop').style.display = nogNietGetrokken > 0 ? '' : 'none';
+function berekenTrekNaamKnopStatus() {
+    // Toon de "Trek naam" knop alleen als er nog namen zijn die niet getrokken zijn.
+    document.getElementById('trekNaamKnop').style.display = namen.length > getrokkenNamen.length ? '' : 'none';
 }
 
 document.getElementById('naamInput').addEventListener('keypress', function(e) {
