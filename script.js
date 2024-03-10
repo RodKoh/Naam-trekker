@@ -9,9 +9,8 @@ function voegNaamToe() {
         namen.push(naam);
         updateNamenLijst();
         naamInput.value = ''; // Reset inputveld
-        if (document.getElementById('trekNaamKnop').style.display === 'none' && getrokkenNamen.length < namen.length) {
-            document.getElementById('trekNaamKnop').style.display = 'inline'; // Toon de "Trek naam" knop weer
-        }
+        // Toon de "Trek naam" knop zolang er namen beschikbaar zijn
+        document.getElementById('trekNaamKnop').style.display = '';
     } else {
         alert('Deze naam bestaat al of is leeg.');
     }
@@ -34,10 +33,11 @@ function updateNamenLijst() {
 function verwijderNaam(naam) {
     if (confirm('Weet je zeker dat je deze naam wilt verwijderen?')) {
         namen = namen.filter(n => n !== naam);
-        getrokkenNamen = getrokkenNamen.filter(n => n !== naam); // Verwijder uit getrokkenNamen als het daar staat
+        // Directe update niet meer nodig in getrokkenNamen; aanpassing in trekNaam controle
         updateNamenLijst();
-        if (getrokkenNamen.length === namen.length) {
-            document.getElementById('trekNaamKnop').style.display = 'none'; // Verberg als alle overgebleven namen getrokken zijn
+        // Heroverweeg de weergave van "Trek naam" knop na het verwijderen van een naam
+        if (getrokkenNamen.length < namen.length) {
+            document.getElementById('trekNaamKnop').style.display = '';
         }
     }
 }
@@ -48,23 +48,22 @@ function trekNaam() {
         let getrokkenNaam = nogNietGetrokken[Math.floor(Math.random() * nogNietGetrokken.length)];
         getrokkenNamen.push(getrokkenNaam);
         document.getElementById('getrokkenNamen').innerHTML += `<li>${getrokkenNaam}</li>`;
+        if (getrokkenNamen.length === namen.length) {
+            document.getElementById('trekNaamKnop').style.display = 'none';
+        }
     } else {
         alert('Alle namen zijn getrokken voor deze ronde.');
-        document.getElementById('trekNaamKnop').style.display = 'none';
     }
 }
 
 function startNieuweRonde() {
-    if (getrokkenNamen.length < namen.length && !confirm('Er zijn nog niet getrokken namen. Wil je toch een nieuwe ronde starten?')) {
-        return;
-    }
     if (getrokkenNamen.length > 0) {
-        rondesGeschiedenis.push(getrokkenNamen);
+        rondesGeschiedenis.push([...getrokkenNamen]);
         updateGeschiedenis();
     }
     getrokkenNamen = [];
     document.getElementById('getrokkenNamen').innerHTML = '';
-    document.getElementById('trekNaamKnop').style.display = namen.length > 0 ? 'inline' : 'none';
+    document.getElementById('trekNaamKnop').style.display = namen.length > 0 ? '' : 'none';
     alert('Nieuwe ronde gestart. Je kunt weer namen trekken.');
 }
 
