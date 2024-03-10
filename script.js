@@ -1,7 +1,6 @@
 let namen = [];
 let getrokkenNamen = [];
 let trekkingGeschiedenis = [];
-let huidigeRondeNamen = []; // Bewaar getrokken namen van de huidige ronde
 
 function voegNaamToe() {
     const naamInput = document.getElementById('naamInput');
@@ -49,7 +48,6 @@ function trekNaam() {
     let nogNietGetrokken = namen.filter(naam => !getrokkenNamen.includes(naam));
     let getrokkenNaam = nogNietGetrokken[Math.floor(Math.random() * nogNietGetrokken.length)];
     getrokkenNamen.push(getrokkenNaam);
-    huidigeRondeNamen.push(getrokkenNaam); // Voeg getrokken naam toe aan huidige ronde
     document.getElementById('getrokkenNamen').innerHTML += `<li>${getrokkenNaam}</li>`;
 }
 
@@ -59,26 +57,23 @@ function startNieuweRonde() {
     }
 
     if (getrokkenNamen.length > 0) {
-        updateGeschiedenis(); // Voeg huidige ronde toe aan geschiedenis voordat je reset
+        voegRondeToeAanGeschiedenis();
     }
 
     getrokkenNamen = [];
-    huidigeRondeNamen = [];
     document.getElementById('getrokkenNamen').innerHTML = '';
     alert('Nieuwe ronde gestart. Je kunt weer namen trekken.');
 }
 
-function updateGeschiedenis() {
-    if (huidigeRondeNamen.length > 0) {
-        let rondeNummer = trekkingGeschiedenis.length + 1;
-        let geschiedenisItem = `Ronde ${rondeNummer}: ${huidigeRondeNamen.join(', ')}`;
-        trekkingGeschiedenis.push(geschiedenisItem);
+function voegRondeToeAanGeschiedenis() {
+    let rondeNummer = trekkingGeschiedenis.length + 1;
+    let geschiedenisItem = `Ronde ${rondeNummer}: ${getrokkenNamen.join(', ')}`;
+    trekkingGeschiedenis.push(geschiedenisItem);
 
-        let geschiedenisLijst = document.getElementById('trekkingGeschiedenis');
-        let li = document.createElement('li');
-        li.textContent = geschiedenisItem;
-        geschiedenisLijst.appendChild(li);
-    }
+    let geschiedenisLijst = document.getElementById('trekkingGeschiedenis');
+    let li = document.createElement('li');
+    li.textContent = geschiedenisItem;
+    geschiedenisLijst.appendChild(li);
 }
 
 document.getElementById('naamInput').addEventListener('keypress', function(e) {
