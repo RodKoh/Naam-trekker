@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawNameButton = document.getElementById('drawName');
     const nameList = document.getElementById('nameList');
     const resultDisplay = document.getElementById('result');
+    const historyDisplay = document.getElementById('history'); // Voeg een element toe voor de geschiedenis
     let names = [];
     let roundNumber = 1;
+    let history = []; // Opslaan van getrokken namen en hun rondes
 
     // Functie om een naam toe te voegen aan de lijst
     addNameButton.addEventListener('click', () => {
@@ -20,19 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Functie om de namen weer te geven in de lijst en om de verwijderknoppen correct te integreren
     function displayNames() {
         nameList.innerHTML = ''; // Leeg de lijst
         names.forEach((name, index) => {
             const li = document.createElement('li');
-            li.textContent = name + " "; // Voeg een spatie toe voor de leesbaarheid
+            li.textContent = name + " "; 
 
-            // Verwijderknop toevoegen
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Verwijder';
             deleteBtn.addEventListener('click', () => {
                 names.splice(index, 1);
-                displayNames(); // Update de lijst om de verwijderde naam te reflecteren
+                displayNames(); 
             });
             li.appendChild(deleteBtn);
 
@@ -40,13 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Functie om een willekeurige naam te trekken
     drawNameButton.addEventListener('click', () => {
         if (names.length > 0) {
             const index = Math.floor(Math.random() * names.length);
             const drawnName = names.splice(index, 1)[0];
             resultDisplay.textContent = `Getrokken naam: ${drawnName}`;
-            displayNames(); // Update de lijst
+            history.push({ round: roundNumber, name: drawnName }); // Sla op in geschiedenis
+            displayNames(); 
+            updateHistoryDisplay(); // Update geschiedenis weergave
         } else {
             resultDisplay.textContent = `Dit is het einde van ronde ${roundNumber}.`;
             roundNumber++;
@@ -60,16 +61,25 @@ document.addEventListener('DOMContentLoaded', () => {
         newRoundBtn.addEventListener('click', () => {
             startNewRound();
         });
-        resultDisplay.innerHTML = ""; // Reset de inhoud voordat de nieuwe knop wordt toegevoegd
+        resultDisplay.innerHTML = ""; 
         resultDisplay.appendChild(newRoundBtn);
     }
 
     function startNewRound() {
         const useNamesAgain = confirm("Wilt u alle namen opnieuw gebruiken voor de nieuwe ronde?");
         if (!useNamesAgain) {
-            names = []; // Leeg de namenlijst als we niet alle namen opnieuw gebruiken
+            names = []; 
         }
-        displayNames(); // Update de lijst
+        displayNames(); 
         resultDisplay.textContent = "Voeg namen toe voor de nieuwe ronde.";
+    }
+
+    function updateHistoryDisplay() {
+        historyDisplay.innerHTML = '<h3>Trekking Geschiedenis</h3>';
+        history.forEach(item => {
+            const entry = document.createElement('p');
+            entry.textContent = `Ronde ${item.round}: ${item.name}`;
+            historyDisplay.appendChild(entry);
+        });
     }
 });
