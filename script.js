@@ -15,7 +15,6 @@ function voegNaamToe() {
     namen.push(naam);
     updateNamenLijst();
     naamInput.value = ''; // Reset inputveld
-    // Toon altijd de "Trek naam" knop als er namen zijn, tenzij ze allemaal al getrokken zijn
     updateTrekNaamKnopStatus();
 }
 
@@ -34,29 +33,27 @@ function updateNamenLijst() {
 }
 
 function verwijderNaam(naam) {
-    if (confirm('Weet je zeker dat je deze naam wilt verwijderen?')) {
-        namen = namen.filter(n => n !== naam);
-        updateNamenLijst();
-        // Mogelijkheid tot trekken heroverwegen als namen worden verwijderd
-        updateTrekNaamKnopStatus();
-    }
+    namen = namen.filter(n => n !== naam);
+    updateNamenLijst();
+    updateTrekNaamKnopStatus();
 }
 
 function trekNaam() {
     const nogTeTrekkenNamen = namen.filter(naam => !rondesGeschiedenis[rondesGeschiedenis.length - 1].includes(naam));
-    if (nogTeTrekkenNamen.length === 0) {
-        alert('Alle namen zijn al getrokken voor deze ronde.');
-        return;
+    if (nogTeTrekkenNamen.length > 0) {
+        const getrokkenNaam = nogTeTrekkenNamen[Math.floor(Math.random() * nogTeTrekkenNamen.length)];
+        rondesGeschiedenis[rondesGeschiedenis.length - 1].push(getrokkenNaam);
+        updateGeschiedenis();
     }
-    const getrokkenNaam = nogTeTrekkenNamen[Math.floor(Math.random() * nogTeTrekkenNamen.length)];
-    rondesGeschiedenis[rondesGeschiedenis.length - 1].push(getrokkenNaam);
-    updateGeschiedenis();
     updateTrekNaamKnopStatus();
 }
 
 function startNieuweRonde() {
-    if (rondesGeschiedenis[rondesGeschiedenis.length - 1].length < namen.length && !confirm('Niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?')) {
-        return;
+    if (rondesGeschiedenis[rondesGeschiedenis.length - 1].length < namen.length) {
+        const bevestiging = confirm('Niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?');
+        if (!bevestiging) {
+            return;
+        }
     }
     rondesGeschiedenis.push([]);
     updateTrekNaamKnopStatus();
@@ -75,9 +72,8 @@ function updateGeschiedenis() {
 }
 
 function updateTrekNaamKnopStatus() {
-    const huidigeRondeNamen = rondesGeschiedenis[rondesGeschiedenis.length - 1];
-    const zijnAlleNamenGetrokken = namen.every(naam => huidigeRondeNamen.includes(naam));
-    document.getElementById('trekNaamKnop').style.display = zijnAlleNamenGetrokken ? 'none' : '';
+    const laatsteRonde = rondesGeschiedenis[rondesGeschiedenis.length - 1];
+    document.getElementById('trekNaamKnop').style.display = laatsteRonde.length < namen.length ? '' : 'none';
 }
 
 document.getElementById('naamInput').addEventListener('keypress', function(e) {
