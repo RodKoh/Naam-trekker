@@ -1,35 +1,74 @@
-body, html {
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
     margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
 }
 
 .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    max-width: 800px;
+    margin: auto;
+    background: white;
     padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
 }
 
-.paneel {
-    border: 1px solid #ddd;
-    padding: 10px;
-    width: 30%;
+h2 {
+    color: #007bff;
 }
 
-.paneel h2 {
-    text-align: center;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 10px;
-}
-
-button {
+.button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.list li {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 10px;
+}
+
+.list button {
+    float: right;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    width: calc(100% - 24px); /* Account for padding and border */
+}
+
+/* Specifieke stijlen voor de geschiedenis sectie */
+#trekkingGeschiedenis li {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
