@@ -1,51 +1,35 @@
-body {
+body, html {
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     padding: 20px;
-    background-color: #f0f0f0;
 }
 
-#app {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin: 40px auto;
-}
-
-h1 {
-    color: #333;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-input[type="text"] {
+.paneel {
+    border: 1px solid #ddd;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
+    width: 30%;
+}
+
+.paneel h2 {
+    text-align: center;
 }
 
 ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
-ul li {
-    padding: 8px;
-    margin-top: 5px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #e1e1e1;
+li {
+    margin-bottom: 10px;
+}
+
+button {
+    cursor: pointer;
 }
