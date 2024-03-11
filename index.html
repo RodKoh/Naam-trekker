@@ -1,30 +1,18 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Namen Trekker</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <div id="namenInvoer" class="paneel">
-            <h2>Namen Invoeren</h2>
-            <input type="text" id="naamInput" placeholder="Voeg een naam toe">
-            <button onclick="voegNaamToe()">Toevoegen</button>
-            <ul id="namenLijst"></ul>
-        </div>
-        <div id="trekking" class="paneel">
-            <h2>Trekking</h2>
-            <button id="trekNaamKnop" onclick="trekNaam()">Trek Naam</button>
-            <button onclick="startNieuweRonde()">Start Nieuwe Ronde</button>
-            <ul id="getrokkenNamen"></ul>
-        </div>
-        <div id="geschiedenis" class="paneel">
-            <h2>Geschiedenis</h2>
-            <ul id="trekkingGeschiedenis"></ul>
-        </div>
+<div class="container">
+    <h2>Naam Trekken Programma</h2>
+    <div>
+        <input type="text" id="naamInput" placeholder="Voeg een naam toe">
+        <button class="button" onclick="voegNaamToe()">Toevoegen</button>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+    <ul class="list" id="namenLijst">
+        <!-- Namen worden hier toegevoegd -->
+    </ul>
+    <div>
+        <button class="button" id="trekNaamKnop" onclick="trekNaam()">Trek Naam</button>
+        <button class="button" onclick="startNieuweRonde()">Start Nieuwe Ronde</button>
+    </div>
+    <h2>Geschiedenis</h2>
+    <ul class="list" id="trekkingGeschiedenis">
+        <!-- Geschiedenis wordt hier weergegeven -->
+    </ul>
+</div>
