@@ -32,6 +32,27 @@ h2 {
 
 .button:hover {
     background-color: #0056b3;
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.paneel {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 30%;
+}
+
+.paneel h2 {
+    text-align: center;
 }
 
 .button:disabled {
@@ -41,7 +62,7 @@ h2 {
 
 .list {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
 }
 
 .list li {
@@ -71,4 +92,8 @@ input[type="text"] {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+button {
+    cursor: pointer;
 }
