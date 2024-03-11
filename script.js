@@ -1,6 +1,5 @@
 let namen = [];
-let getrokkenNamen = []; // Namen getrokken in de huidige ronde
-let geschiedenisRondes = [[]]; // Begint met één lege ronde voor de geschiedenis
+let rondesGeschiedenis = [[]]; // Bevat lijsten van namen voor elke ronde, inclusief de huidige
 
 function voegNaamToe() {
     const naamInput = document.getElementById('naamInput');
@@ -16,18 +15,17 @@ function voegNaamToe() {
     namen.push(naam);
     updateNamenLijst();
     naamInput.value = ''; // Reset inputveld
-    if (namen.length === 1 || getrokkenNamen.length < namen.length) {
-        document.getElementById('trekNaamKnop').style.display = 'inline'; // Toon de "Trek naam" knop
-    }
+    // Toon altijd de "Trek naam" knop als er namen zijn
+    document.getElementById('trekNaamKnop').style.display = '';
 }
 
 function updateNamenLijst() {
     const namenLijst = document.getElementById('namenLijst');
     namenLijst.innerHTML = '';
     namen.forEach(naam => {
-        const li = document.createElement('li');
+        let li = document.createElement('li');
         li.textContent = naam;
-        const verwijderBtn = document.createElement('button');
+        let verwijderBtn = document.createElement('button');
         verwijderBtn.textContent = 'Verwijder';
         verwijderBtn.onclick = () => verwijderNaam(naam);
         li.appendChild(verwijderBtn);
@@ -36,40 +34,46 @@ function updateNamenLijst() {
 }
 
 function verwijderNaam(naam) {
-    if (!confirm('Weet je zeker dat je deze naam wilt verwijderen?')) return;
-    namen = namen.filter(n => n !== naam);
-    // Direct bijwerken van de getrokken namen is niet langer nodig; de logica hanteert nu verwijderingen adequaat.
-    updateNamenLijst();
-    document.getElementById('trekNaamKnop').style.display = getrokkenNamen.length < namen.length ? 'inline' : 'none';
+    if (confirm('Weet je zeker dat je deze naam wilt verwijderen?')) {
+        namen = namen.filter(n => n !== naam);
+        updateNamenLijst();
+        // Toon de "Trek naam" knop zolang er nog namen zijn die niet getrokken zijn in de huidige ronde.
+        document.getElementById('trekNaamKnop').style.display = rondesGeschiedenis[rondesGeschiedenis.length - 1].length < namen.length ? '' : 'none';
+    }
 }
 
 function trekNaam() {
-    const beschikbareNamen = namen.filter(naam => !getrokkenNamen.includes(naam));
-    if (beschikbareNamen.length === 0) {
+    const nogTeTrekkenNamen = namen.filter(naam => !rondesGeschiedenis[rondesGeschiedenis.length - 1].includes(naam));
+    if (nogTeTrekkenNamen.length === 0) {
         alert('Alle namen zijn al getrokken voor deze ronde.');
         return;
     }
-    const getrokkenNaam = beschikbareNamen[Math.floor(Math.random() * beschikbareNamen.length)];
-    getrokkenNamen.push(getrokkenNaam);
-    geschiedenisRondes[geschiedenisRondes.length - 1].push(getrokkenNaam); // Voeg toe aan de huidige ronde
+    const getrokkenNaam = nogTeTrekkenNamen[Math.floor(Math.random() * nogTeTrekkenNamen.length)];
+    rondesGeschiedenis[rondesGeschiedenis.length - 1].push(getrokkenNaam);
     updateGeschiedenis();
+    // Verberg de "Trek naam" knop als alle namen getrokken zijn
+    if (rondesGeschiedenis[rondesGeschiedenis.length - 1].length === namen.length) {
+        document.getElementById('trekNaamKnop').style.display = 'none';
+    }
 }
 
 function startNieuweRonde() {
-    if (getrokkenNamen.length < namen.length && !confirm('Niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?')) {
-        return;
+    if (rondesGeschiedenis[rondesGeschiedenis.length - 1].length < namen.length) {
+        const bevestiging = confirm('Niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?');
+        if (!bevestiging) {
+            return;
+        }
     }
-    getrokkenNamen = [];
-    geschiedenisRondes.push([]); // Start een nieuwe ronde in de geschiedenis
-    document.getElementById('trekNaamKnop').style.display = namen.length > 0 ? 'inline' : 'none'; // Toon of verberg de trekknop
+    rondesGeschiedenis.push([]); // Start een nieuwe ronde
+    document.getElementById('trekNaamKnop').style.display = namen.length ? '' : 'none';
     updateGeschiedenis();
 }
 
 function updateGeschiedenis() {
     const geschiedenisLijst = document.getElementById('trekkingGeschiedenis');
     geschiedenisLijst.innerHTML = '';
-    geschiedenisRondes.forEach((ronde, index) => {
-        if (ronde.length > 0) { // Toon alleen rondes met getrokken namen
+    rondesGeschiedenis.forEach((ronde, index) => {
+        if (ronde.length > 0) { // Voeg alleen rondes met getrokken namen toe
             const rondeTekst = `Ronde ${index + 1}: ${ronde.join(', ')}`;
             geschiedenisLijst.innerHTML += `<li>${rondeTekst}</li>`;
         }
