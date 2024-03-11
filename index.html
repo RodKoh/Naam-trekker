@@ -1,18 +1,22 @@
-<div class="container">
-    <h2>Naam Trekken Programma</h2>
-    <div>
-        <input type="text" id="naamInput" placeholder="Voeg een naam toe">
-        <button class="button" onclick="voegNaamToe()">Toevoegen</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Naam Trekken</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Naam Trekken Applicatie</h1>
+        <div>
+            <input type="text" id="naamInput" placeholder="Voer een naam in">
+            <button onclick="voegNaamToe()">Toevoegen</button>
+        </div>
+        <ul id="namenLijst"></ul>
+        <button onclick="trekNaam()">Trek Naam</button>
+        <h2>Geschiedenis</h2>
+        <ul id="trekkingGeschiedenis"></ul>
     </div>
-    <ul class="list" id="namenLijst">
-        <!-- Namen worden hier toegevoegd -->
-    </ul>
-    <div>
-        <button class="button" id="trekNaamKnop" onclick="trekNaam()">Trek Naam</button>
-        <button class="button" onclick="startNieuweRonde()">Start Nieuwe Ronde</button>
-    </div>
-    <h2>Geschiedenis</h2>
-    <ul class="list" id="trekkingGeschiedenis">
-        <!-- Geschiedenis wordt hier weergegeven -->
-    </ul>
-</div>
+    <script src="script.js"></script>
+</body>
+</html>
