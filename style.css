@@ -1,99 +1,51 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    font-family: Arial, sans-serif;
     padding: 20px;
-    margin: 0;
+    background-color: #f0f0f0;
 }
 
-.container {
-    max-width: 800px;
-    margin: auto;
+#app {
     background: white;
     padding: 20px;
+    border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    max-width: 600px;
+    margin: 40px auto;
 }
 
-h2 {
-    color: #007bff;
+h1 {
+    color: #333;
 }
 
-.button {
+button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 15px;
     margin: 5px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.button:hover {
+button:hover {
     background-color: #0056b3;
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
-
-.container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 20px;
-}
-
-.paneel {
-    border: 1px solid #ddd;
-    padding: 10px;
-    width: 30%;
-}
-
-.paneel h2 {
-    text-align: center;
-}
-
-.button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-.list {
-    list-style: none;
-    padding: 0;
-}
-
-.list li {
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eeeeee;
-    padding-bottom: 10px;
-}
-
-.list button {
-    float: right;
-    cursor: pointer;
 }
 
 input[type="text"] {
     padding: 10px;
-    margin: 10px 0;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    border: 1px solid #cccccc;
-    width: calc(100% - 24px); /* Account for padding and border */
+    width: 300px;
 }
 
-/* Specifieke stijlen voor de geschiedenis sectie */
-#trekkingGeschiedenis li {
-    animation: fadeIn 0.3s;
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-button {
-    cursor: pointer;
+ul li {
+    padding: 8px;
+    margin-top: 5px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e1e1e1;
 }
