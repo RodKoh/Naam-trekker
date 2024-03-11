@@ -1,4 +1,4 @@
-let namen = [];
+let namen = []
 let getrokkenNamen = []; // Namen getrokken in de huidige ronde
 let geschiedenisRondes = [[]]; // Begint met één lege ronde voor de geschiedenis
 
