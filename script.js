@@ -1,6 +1,5 @@
 let namen = [];
-let getrokkenNamen = []; // Namen getrokken in de huidige ronde
-let rondesGeschiedenis = []; // Bevat de geschiedenis van alle rondes
+let rondesGeschiedenis = []; // Bevat getrokken namen voor elke ronde
 
 function voegNaamToe() {
     const naamInput = document.getElementById('naamInput');
@@ -15,8 +14,8 @@ function voegNaamToe() {
     }
     namen.push(naam);
     updateNamenLijst();
-    naamInput.value = ''; // Reset inputveld
-    updateTrekNaamKnopStatus();
+    naamInput.value = '';
+    updateTrekNaamKnopStatus(); // Verzekert dat de knop getoond wordt als er namen zijn om te trekken.
 }
 
 function updateNamenLijst() {
@@ -35,46 +34,52 @@ function updateNamenLijst() {
 
 function verwijderNaam(naam) {
     namen = namen.filter(n => n !== naam);
-    getrokkenNamen = getrokkenNamen.filter(n => n !== naam); // Zorg ervoor dat verwijderde namen ook uit getrokkenNamen verwijderd worden
     updateNamenLijst();
-    updateTrekNaamKnopStatus();
+    updateTrekNaamKnopStatus(); // Herbereken de status van de knop na het verwijderen van een naam.
 }
 
 function trekNaam() {
-    if (getrokkenNamen.length === namen.length) {
-        updateTrekNaamKnopStatus(); // Zorgt ervoor dat de knop correct wordt bijgewerkt
+    if (namen.length === 0 || (rondesGeschiedenis.length && rondesGeschiedenis[0].length === namen.length)) {
+        // Als alle namen getrokken zijn, toon de knop niet.
+        updateTrekNaamKnopStatus();
         return;
     }
-
-    const beschikbareNamen = namen.filter(naam => !getrokkenNamen.includes(naam));
+    if (!rondesGeschiedenis.length || rondesGeschiedenis[0].length === namen.length) {
+        rondesGeschiedenis.unshift([]); // Begin een nieuwe ronde als de vorige vol is
+    }
+    const beschikbareNamen = namen.filter(naam => !rondesGeschiedenis[0].includes(naam));
     const getrokkenNaam = beschikbareNamen[Math.floor(Math.random() * beschikbareNamen.length)];
-    getrokkenNamen.push(getrokkenNaam);
-    rondesGeschiedenis.push(getrokkenNaam); // Voeg toe aan de huidige ronde geschiedenis
-
+    rondesGeschiedenis[0].push(getrokkenNaam);
     updateGeschiedenis();
     updateTrekNaamKnopStatus();
 }
 
 function startNieuweRonde() {
-    if (getrokkenNamen.length < namen.length && !confirm('Niet alle namen zijn getrokken. Wil je toch een nieuwe ronde starten?')) {
-        return;
+    if (!rondesGeschiedenis.length || rondesGeschiedenis[0].length < namen.length) {
+        alert('Je moet alle namen trekken voordat je een nieuwe ronde start.');
+    } else {
+        rondesGeschiedenis.unshift([]); // Voegt een nieuwe lege ronde toe aan het begin van de geschiedenis
+        updateTrekNaamKnopStatus();
     }
-    getrokkenNamen = []; // Reset getrokken namen voor de nieuwe ronde
-    rondesGeschiedenis = []; // Reset de ronde geschiedenis
     updateGeschiedenis();
-    updateTrekNaamKnopStatus();
 }
 
 function updateGeschiedenis() {
     const geschiedenisLijst = document.getElementById('trekkingGeschiedenis');
     geschiedenisLijst.innerHTML = '';
-    rondesGeschiedenis.forEach((naam, index) => {
-        geschiedenisLijst.innerHTML += `<li>${naam}</li>`;
+    rondesGeschiedenis.forEach((ronde, index) => {
+        let rondeTekst = `Ronde ${index + 1}: ${ronde.join(', ')}`;
+        geschiedenisLijst.innerHTML += `<li>${rondeTekst}</li>`;
     });
 }
 
 function updateTrekNaamKnopStatus() {
-    document.getElementById('trekNaamKnop').style.display = getrokkenNamen.length < namen.length ? '' : 'none';
+    const knop = document.getElementById('trekNaamKnop');
+    if (!rondesGeschiedenis.length || rondesGeschiedenis[0].length < namen.length) {
+        knop.style.display = '';
+    } else {
+        knop.style.display = 'none';
+    }
 }
 
 document.getElementById('naamInput').addEventListener('keypress', function(e) {
