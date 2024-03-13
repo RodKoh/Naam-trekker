@@ -1,5 +1,5 @@
 let namen = [];
-let rondesGeschiedenis = []; // Bevat lijsten van namen voor elke ronde
+let rondesGeschiedenis = []; // Hier worden de getrokken namen per ronde opgeslagen
 
 function voegNaamToe() {
     const naamInput = document.getElementById('naamInput');
@@ -14,7 +14,7 @@ function voegNaamToe() {
     }
     namen.push(naam);
     updateNamenLijst();
-    naamInput.value = ''; // Reset inputveld
+    naamInput.value = '';
     updateTrekNaamKnopStatus();
 }
 
@@ -34,30 +34,39 @@ function updateNamenLijst() {
 
 function verwijderNaam(naam) {
     namen = namen.filter(n => n !== naam);
+    getrokkenNamenVanAlleRondes = rondesGeschiedenis.flat();
+    if (getrokkenNamenVanAlleRondes.includes(naam)) {
+        alert("Je kunt een al getrokken naam niet verwijderen.");
+        return;
+    }
     updateNamenLijst();
     updateTrekNaamKnopStatus();
 }
 
 function trekNaam() {
-    // Voorkom trekken als er geen namen zijn of alle namen al getrokken zijn
-    if (!rondesGeschiedenis.length || rondesGeschiedenis[0].length === namen.length) {
-        updateTrekNaamKnopStatus();
+    const laatsteRonde = rondesGeschiedenis[rondesGeschiedenis.length - 1] || [];
+    if (laatsteRonde.length === namen.length) {
+        alert('Alle namen zijn getrokken voor deze ronde.');
         return;
     }
-    const beschikbareNamen = namen.filter(naam => !rondesGeschiedenis[0].includes(naam));
+    const beschikbareNamen = namen.filter(naam => !laatsteRonde.includes(naam));
     const getrokkenNaam = beschikbareNamen[Math.floor(Math.random() * beschikbareNamen.length)];
-    rondesGeschiedenis[0].push(getrokkenNaam);
+    if (!rondesGeschiedenis.length || laatsteRonde.length === namen.length) {
+        rondesGeschiedenis.push([getrokkenNaam]);
+    } else {
+        laatsteRonde.push(getrokkenNaam);
+    }
     updateGeschiedenis();
     updateTrekNaamKnopStatus();
 }
 
 function startNieuweRonde() {
-    if (rondesGeschiedenis.length === 0 || rondesGeschiedenis[0].length < namen.length) {
-        rondesGeschiedenis.unshift([]);
-        updateGeschiedenis();
-    } else {
-        alert('Alle namen zijn al getrokken voor deze ronde.');
+    if (!rondesGeschiedenis.length || rondesGeschiedenis[rondesGeschiedenis.length - 1].length < namen.length) {
+        alert('Je moet alle namen trekken voordat je een nieuwe ronde start.');
+        return;
     }
+    rondesGeschiedenis.push([]);
+    updateGeschiedenis();
     updateTrekNaamKnopStatus();
 }
 
@@ -65,19 +74,19 @@ function updateGeschiedenis() {
     const geschiedenisLijst = document.getElementById('trekkingGeschiedenis');
     geschiedenisLijst.innerHTML = '';
     rondesGeschiedenis.forEach((ronde, index) => {
-        const rondeTekst = `Ronde ${rondesGeschiedenis.length - index}: ${ronde.join(', ')}`;
+        let rondeTekst = `Ronde ${index + 1}: ${ronde.join(', ')}`;
         geschiedenisLijst.innerHTML += `<li>${rondeTekst}</li>`;
     });
 }
 
 function updateTrekNaamKnopStatus() {
-    const trekNaamKnop = document.getElementById('trekNaamKnop');
-    trekNaamKnop.style.display = (rondesGeschiedenis.length === 0 || rondesGeschiedenis[0].length < namen.length) ? '' : 'none';
+    const laatsteRonde = rondesGeschiedenis[rondesGeschiedenis.length - 1] || [];
+    document.getElementById('trekNaamKnop').style.display = laatsteRonde.length < namen.length ? '' : 'none';
 }
 
 document.getElementById('naamInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        e.preventDefault(); // Voorkom herladen van de pagina
+        e.preventDefault(); // Voorkomt dat de pagina ververst wordt bij het indrukken van Enter
         voegNaamToe();
     }
 });
